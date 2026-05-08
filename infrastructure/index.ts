@@ -22,7 +22,7 @@ const mediaContainer = new storage.BlobContainer("media-assets", {
 const postgresServer = new postgres.Server("cms-db", {
   resourceGroupName: resourceGroup.name,
   administratorLogin: "webcoadmin",
-  administratorLoginPassword: "replace-password",
+  administratorLoginPassword: process.env.DB_PASSWORD,
   version: "16",
 
   storage: {
@@ -35,6 +35,8 @@ const postgresServer = new postgres.Server("cms-db", {
   },
 });
 
+
+
 const vault = new keyvault.Vault("cms-vault", {
   resourceGroupName: resourceGroup.name,
   properties: {
@@ -46,9 +48,14 @@ const vault = new keyvault.Vault("cms-vault", {
     accessPolicies: [],
   },
 });
+const managedEnv = new app.ManagedEnvironment("directus-env", {
+  resourceGroupName: resourceGroup.name,
+});
+
 
 const containerApp = new app.ContainerApp("directus-app", {
   resourceGroupName: resourceGroup.name,
+  managedEnvironmentId: managedEnv.id,  
   configuration: {
     ingress: {
       external: true,

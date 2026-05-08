@@ -18,3 +18,6 @@ Production deployments should also include:
 - backup and disaster recovery planning
 
 Managed Azure PostgreSQL should replace local PostgreSQL containers because it reduces operational overhead, improves reliability, and provides automated backups and scaling capabilities.
+
+Health checks (Liveness and Readiness probes) should be configured in Azure Container Apps
+to automatically restart unhealthy containers and only route traffic to ready instances.
